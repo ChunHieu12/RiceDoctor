@@ -1,6 +1,6 @@
-import { View, Text, ImageBackground, Image, ActivityIndicator } from 'react-native'
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react'
-import { appInfo } from '../constants/appInfos'
+import { ActivityIndicator, Image, ImageBackground } from 'react-native'
 import { SpaceComponent } from '../components'
 import { appColors } from '../constants/appColors'
 

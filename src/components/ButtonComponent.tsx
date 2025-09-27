@@ -1,9 +1,9 @@
-import { View, Text, StyleProp, ViewStyle, TextStyle, TouchableOpacity } from 'react-native'
-import React, { ReactNode } from 'react'
-import TextComponent from './TextComponent';
-import { globalStyles } from '../styles/globalStyles';
+import React, { ReactNode } from 'react';
+import { StyleProp, TextStyle, TouchableOpacity, ViewStyle } from 'react-native';
 import { appColors } from '../constants/appColors';
 import { fontFamilies } from '../constants/fontFamilies';
+import { globalStyles } from '../styles/globalStyles';
+import TextComponent from './TextComponent';
 
 
 
@@ -37,6 +37,7 @@ const ButtonComponent = (props: Props) => {
                 font={fontFamilies.medium}
                 styles={[
                     textStyles,
+                    // eslint-disable-next-line react-native/no-inline-styles
                     {
                         marginLeft: icon ? 12 : 0,
                     },

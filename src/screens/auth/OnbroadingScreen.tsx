@@ -1,11 +1,12 @@
-import { View, Text, Image, Touchable, TouchableOpacity, StyleSheet } from 'react-native'
+/* eslint-disable react-native/no-inline-styles */
 import React, { useState } from 'react'
-import { globalStyles } from '../../styles/globalStyles'
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native'
 import Swiper from 'react-native-swiper'
-import { appInfo } from '../../constants/appInfos'
-import { appColors } from '../../constants/appColors'
 import { TextComponent } from '../../components'
+import { appColors } from '../../constants/appColors'
+import { appInfo } from '../../constants/appInfos'
 import { fontFamilies } from '../../constants/fontFamilies'
+import { globalStyles } from '../../styles/globalStyles'
 
 const OnbroadingScreen = ({ navigation }: any) => {
 
@@ -17,7 +18,7 @@ const OnbroadingScreen = ({ navigation }: any) => {
                 onIndexChanged={num => setIndex(num)}
                 index={index}
                 activeDotColor={appColors.white}>
-                <Image source={require('../../assets/images/onboarding-1.png')}
+                <Image source={require('../../assets/images/onboarding-5.png')}
                     style={{
                         flex: 1,
                         width: appInfo.sizes.WIDTH,
@@ -70,7 +71,8 @@ const OnbroadingScreen = ({ navigation }: any) => {
 export default OnbroadingScreen
 
 
-const styles = StyleSheet.create({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const style = StyleSheet.create({
     text: {
         color: appColors.white,
         fontSize: 16,

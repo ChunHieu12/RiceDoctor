@@ -1,8 +1,8 @@
-import { View, Text, StyleProp, TextStyle } from 'react-native'
-import React from 'react'
+import React from 'react';
+import { StyleProp, Text, TextStyle } from 'react-native';
 import { appColors } from '../constants/appColors';
-import { globalStyles } from '../styles/globalStyles';
 import { fontFamilies } from '../constants/fontFamilies';
+import { globalStyles } from '../styles/globalStyles';
 
 interface Props {
     text: string;
@@ -22,6 +22,7 @@ const TextComponent = (props: Props) => {
 
         <Text style={[
             globalStyles.text,
+            // eslint-disable-next-line react-native/no-inline-styles
             {
                 color: color ?? appColors.text,
                 flex: flex ?? 0,
