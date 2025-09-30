@@ -18,7 +18,7 @@ const OnbroadingScreen = ({ navigation }: any) => {
                 onIndexChanged={num => setIndex(num)}
                 index={index}
                 activeDotColor={appColors.white}>
-                <Image source={require('../../assets/images/onboarding-5.png')}
+                <Image source={require('../../assets/images/onboarding-1.png')}
                     style={{
                         flex: 1,
                         width: appInfo.sizes.WIDTH,

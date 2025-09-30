@@ -1,11 +1,26 @@
 const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+// eslint-disable-next-line no-unused-vars
+const defaultConfig = getDefaultConfig(__dirname)
+const{
+assetExts,
+sourceExts
 
-/**
- * Metro configuration
- * https://reactnative.dev/docs/metro
- *
- * @type {import('@react-native/metro-config').MetroConfig}
- */
-const config = {};
+}= defaultConfig.resolver;
+const config={
+    transformer:{
+        babelTransformerPath: require.resolve('react-native-svg-transformer'),
+    },
+    resolver:{
+        assetExts: assetExts.filter(ext=>ext !== 'svg'),
+        sourceExts:[...sourceExts, 'svg'],
+    }
+}
+// /**
+//  * Metro configuration
+//  * https://reactnative.dev/docs/metro
+//  *
+//  * @type {import('@react-native/metro-config').MetroConfig}
+//  */
+// const config = {};
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), config);
+module.exports = mergeConfig(defaultConfig, config);

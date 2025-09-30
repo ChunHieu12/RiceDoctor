@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { View, Text, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { SplashScreen } from './src/screens';
@@ -23,6 +24,7 @@ const App = () => {
   useEffect(() => {
     checkLogin();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
 

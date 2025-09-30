@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
  import { View, Text, TouchableOpacity, TextInput, StyleSheet, KeyboardType } from 'react-native';
  import React, { ReactNode, useState } from 'react';
  import { appColors } from '../constants/appColors';
@@ -57,7 +58,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
     borderWidth:1,
    borderColor:appColors.gray3,
    width:'100%',
-   minHeight:56,
+   minHeight:50,
    justifyContent:'center',
    alignItems:'center',
    paddingHorizontal:15,

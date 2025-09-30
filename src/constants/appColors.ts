@@ -5,5 +5,6 @@ export const appColors = {
     gray: '#807A7A', // 6 ký tự chuẩn
     gray2: '#DADADA',
     gray3: '#E4DFDF',
+    gray4: '#9D9898',
     link: '#0B462C',
 }
