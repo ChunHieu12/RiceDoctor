@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/self-closing-comp */
-import React, { useState } from 'react'
-import { Image, Switch, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Image, Switch, Text, View } from 'react-native'
 import { globalStyles } from '../../styles/globalStyles'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { appColors } from '../../constants/appColors'
@@ -10,21 +10,75 @@ import { Lock, Sms } from 'iconsax-react-native'
 import { fontFamilies } from '../../constants/fontFamilies'
 import { Button } from '@react-navigation/elements'
 import SocialLogin from './components/SocialLogin'
+import { LoadingModal } from '../../modals'
+import authencationAPI from '../../apis/authApi'
+import { Validate } from '../../utils/validate'
 const initValue ={
     username:'',
     email:'',
     password:'',
     confirmPassword:'',
 }
-const SignUpScreen = ({navigation}:any) => {
+
+
+
+ const SignUpScreen = ({navigation}:any) => {
  const[values, setValues]=useState(initValue);
+ const[isLoading, setIsLoading] = useState(false);
+ const[errorMessage, setErrorMessage]=useState('');
+ useEffect(()=>{
+    if(values.email || values.password){
+        setErrorMessage('')
+    }
+ }, [values.email, values.password]);
  const handleChangeValue = (key:string, value:string)=>{
     const data:any ={...values};
     data[`${key}`] = value;
     setValues(data);
  }
+
+ const handleRegister = async()=>{
+    const{email, password, confirmPassword}=values
+    const emailValidation = Validate.email(email)
+    const passValidation = Validate.Password(password)
+   
+    if(email && password && confirmPassword) {
+         if (emailValidation && passValidation) {
+        setErrorMessage('');
+        setIsLoading(true);
+        try {
+            const res = await authencationAPI.HandleAuthentication(
+            '/register',
+            {
+                fullname: values.username,
+                email,
+                password,
+            },
+            'post',
+        )
+
+            console.log(res);
+            setIsLoading(false);
+            
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+        }
+    }else{
+        setErrorMessage('Email chưa chính xác!')
+    }
+
+        
+    }else{
+        setErrorMessage('Vui lòng nhập đầy đủ thông tin!')
+    }
+
+
+}
     // const [isRemember, setIsRemember]=useState(true);
     return (
+        <>
+        
     <ContainerComponent isImageBackground isScroll back>
         {/* <SectionComponent styles={{
             justifyContent:'center',
@@ -91,9 +145,15 @@ const SignUpScreen = ({navigation}:any) => {
         /> */}
       
         </SectionComponent>
-        <SpaceComponent height={16}/>
         <SectionComponent>
-            <ButtonComponent text="Đăng ký" type='primary'/>
+
+        {
+            errorMessage && <TextComponent text={errorMessage} color={'coral'}/>
+        }
+        </SectionComponent>
+        <SpaceComponent height={5}/>
+        <SectionComponent>
+            <ButtonComponent onPress={handleRegister} text="Đăng ký" type='primary'/>
         </SectionComponent>
 <SocialLogin/>
         <SectionComponent>
@@ -103,6 +163,8 @@ const SignUpScreen = ({navigation}:any) => {
             </RowComponent>
         </SectionComponent>
     </ContainerComponent>
+        <LoadingModal visible={isLoading}/>
+        </>
             
       
     )

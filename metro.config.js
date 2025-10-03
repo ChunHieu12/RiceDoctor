@@ -6,7 +6,7 @@ assetExts,
 sourceExts
 
 }= defaultConfig.resolver;
-const config={
+const config={  
     transformer:{
         babelTransformerPath: require.resolve('react-native-svg-transformer'),
     },

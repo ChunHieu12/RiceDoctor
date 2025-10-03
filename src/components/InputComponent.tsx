@@ -31,6 +31,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
       secureTextEntry={isShowPass}
       placeholderTextColor={'#747688'}
       keyboardType={type ?? 'default'}
+      autoCapitalize='none'
       />
       {suffix??suffix}
       <TouchableOpacity onPress={isPassword?()=>setIsShowPass(!isShowPass):()=>onChange('')
