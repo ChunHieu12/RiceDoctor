@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-undef */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { View, Text, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
@@ -6,13 +7,15 @@ import AuthNavigator from './src/navigators/AuthNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { useAsyncStorage } from '@react-native-async-storage/async-storage';
 import MainNavigator from './src/navigators/MainNavigator';
-
+import store from './src/redux/store';
+import { Provider } from "react-redux";
+import AppRouters from './src/navigators/AppRouters';
 const App = () => {
   const [isShowSplash, setIsShowSplash] = useState(true);
-  const [accessToken, setAccessToken] = useState('');
+  // const [accessToken, setAccessToken] = useState('');
 
 
-  const { getItem, setItem } = useAsyncStorage('assetToken');
+  // const { getItem, setItem } = useAsyncStorage('assetToken');
 
   useEffect(() => {
     const timeout = setTimeout(() => {
@@ -21,30 +24,39 @@ const App = () => {
 
     return () => clearTimeout(timeout);
   }, []);
-  useEffect(() => {
-    checkLogin();
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // useEffect(() => {
+  //   checkLogin();
+
+  // // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [])
 
 
-  const checkLogin = async () => {
+  // const checkLogin = async () => {
 
-    const token = await getItem()
-    token && setAccessToken(token);
-  }
+  //   const token = await getItem()
+  //   token && setAccessToken(token);
+  // }
 
 
   return (
     <>
-      <StatusBar barStyle='dark-content' backgroundColor="transparent" />
+      <Provider store={store}>
+      <StatusBar
+      barStyle='dark-content'
+      backgroundColor="transparent"
+      translucent
+      />
+
+
       {isShowSplash ? (
         <SplashScreen />
       ) : (
         <NavigationContainer>
-          {accessToken ? <MainNavigator /> : <AuthNavigator />}
+        <AppRouters/>
         </NavigationContainer>
       )}
+      </Provider>
 
     </>
   )

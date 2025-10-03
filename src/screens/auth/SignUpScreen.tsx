@@ -13,6 +13,9 @@ import SocialLogin from './components/SocialLogin'
 import { LoadingModal } from '../../modals'
 import authencationAPI from '../../apis/authApi'
 import { Validate } from '../../utils/validate'
+import { addAuth } from '../../redux/reducers/authReducer'
+import { useDispatch } from 'react-redux'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 const initValue ={
     username:'',
     email:'',
@@ -26,6 +29,7 @@ const initValue ={
  const[values, setValues]=useState(initValue);
  const[isLoading, setIsLoading] = useState(false);
  const[errorMessage, setErrorMessage]=useState('');
+ const dispatch = useDispatch();
  useEffect(()=>{
     if(values.email || values.password){
         setErrorMessage('')
@@ -57,7 +61,8 @@ const initValue ={
             'post',
         )
 
-            console.log(res);
+            dispatch(addAuth(res.data));
+            await AsyncStorage.setItem('auth', JSON.stringify(res.data))
             setIsLoading(false);
             
         } catch (error) {
