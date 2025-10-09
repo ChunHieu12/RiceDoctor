@@ -39,6 +39,7 @@ const ContainerComponent = (props:Props) => {
           // backgroundColor:'coral',
           minWidth:48,
           minHeight:48,
+          justifyContent: 'flex-start'
           }}>
           {back && (
             <TouchableOpacity onPress={()=> navigation.goBack()} style={{marginRight:12}}>
@@ -64,7 +65,7 @@ const ContainerComponent = (props:Props) => {
       )
     }
     const returnContainer = isScroll?(
-        <ScrollView style={{flex:1}}>{children}</ScrollView>
+        <ScrollView style={{flex:1}} showsVerticalScrollIndicator={false}>{children}</ScrollView>
     ):(
         <View style={{flex:1}}>{children}</View>
     );

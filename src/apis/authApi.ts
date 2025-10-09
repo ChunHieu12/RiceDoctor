@@ -10,7 +10,7 @@ class AuthAPI{
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         method?: 'get'|'post'|'put'|'delete',
     )=>{
-        return await axiosClient(`${appInfo.BASE_URL}/auth${url}`, {
+        return await axiosClient(`/auth${url}`, {
             method:method??'get',
             data,
         });

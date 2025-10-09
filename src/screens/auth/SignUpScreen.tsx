@@ -16,6 +16,12 @@ import { Validate } from '../../utils/validate'
 import { addAuth } from '../../redux/reducers/authReducer'
 import { useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+
+interface errorMessages {
+    email:string,
+    password:string,
+    confirmPassword: string,
+}
 const initValue ={
     username:'',
     email:'',
@@ -28,54 +34,71 @@ const initValue ={
  const SignUpScreen = ({navigation}:any) => {
  const[values, setValues]=useState(initValue);
  const[isLoading, setIsLoading] = useState(false);
- const[errorMessage, setErrorMessage]=useState('');
+ const[errorMessage, setErrorMessage]=useState<any>();
+ const [isDisable, setIsDisable] =  useState(true);
+ 
  const dispatch = useDispatch();
  useEffect(()=>{
-    if(values.email || values.password){
-        setErrorMessage('')
+    if (!errorMessage || (errorMessage &&(errorMessage.email|| errorMessage.password || errorMessage.confirmPassword)) || (!values.email || !values.password || !values.confirmPassword)) {
+        setIsDisable(true);
+    }else{
+        setIsDisable(false);
     }
- }, [values.email, values.password]);
+ }, [errorMessage, values])
+
  const handleChangeValue = (key:string, value:string)=>{
     const data:any ={...values};
     data[`${key}`] = value;
     setValues(data);
  }
 
- const handleRegister = async()=>{
-    const{email, password, confirmPassword}=values
-    const emailValidation = Validate.email(email)
-    const passValidation = Validate.Password(password)
-   
-    if(email && password && confirmPassword) {
-         if (emailValidation && passValidation) {
-        setErrorMessage('');
-        setIsLoading(true);
-        try {
-            const res = await authencationAPI.HandleAuthentication(
-            '/register',
-            {
-                fullname: values.username,
-                email,
-                password,
-            },
-            'post',
-        )
+ const formValidator = (key:string)=>{
+    const data = {...errorMessage}
+    let message = ``
+    switch(key){
+        case 'email':
+            if (!values.email) {
+                message = `Email is required!!`
+            }else if (!Validate.email(values.email)) {
+              message= 'Email is not invalid!!'  
+            }else{
+                message = '';
+            }
+               
+        break;
+        case 'password':
+            message=!values.password ? `Password is required!!!`: '';
 
-            dispatch(addAuth(res.data));
-            await AsyncStorage.setItem('auth', JSON.stringify(res.data))
-            setIsLoading(false);
-            
-        } catch (error) {
-            console.log(error);
-            setIsLoading(false);
-        }
-    }else{
-        setErrorMessage('Email chưa chính xác!')
+            break;
+        case 'confirmPassword':
+            if (!values.confirmPassword) {
+                message = `Please type confirm password!`;
+                
+            }else if (values.confirmPassword !== values.password) {
+                message = 'Password is not match!!!'
+            }else{
+                message = ''
+
+            }
+            break;
     }
+    data[`${key}`] = message;
+    setErrorMessage(data);
+ }
 
-        
-    }else{
-        setErrorMessage('Vui lòng nhập đầy đủ thông tin!')
+ const handleRegister = async()=>{
+    const api = `/verification`
+    setIsLoading(true)
+    try {
+        const res = await authencationAPI.HandleAuthentication(api, {email: values.email}, 'post')
+  
+        setIsLoading(false);
+        navigation.navigate('Verification' ,{
+            code:res.data.code,
+           ...values,
+        });
+    } catch (error) {
+        console.log(error)   
     }
 
 
@@ -118,8 +141,8 @@ const initValue ={
         onChange={val=> handleChangeValue('email',val)} 
         // isPassword
         allowClear
-   
         affix={<Sms size={22} color={appColors.gray} />}
+        onEnd={()=>formValidator('email')}
         />
          <InputComponent
         value={values.password}
@@ -127,8 +150,8 @@ const initValue ={
         onChange={val=> handleChangeValue('password',val)} 
         isPassword
         allowClear
-   
-        affix={<Sms size={22} color={appColors.gray} />}
+        affix={<Lock size={22} color={appColors.gray} />}
+        onEnd={()=>formValidator('password')}
         />
          <InputComponent
         value={values.confirmPassword}
@@ -136,29 +159,32 @@ const initValue ={
         onChange={val=> handleChangeValue('confirmPassword',val)} 
         isPassword
         allowClear
-   
-        affix={<Sms size={22} color={appColors.gray} />}
-        />
-         {/* <InputComponent
-        value={password}
-        placeholder="Password"
-        onChange={val=>setPassword(val)} 
-        isPassword
-        allowClear
-   
         affix={<Lock size={22} color={appColors.gray} />}
-        /> */}
+        onEnd={()=>formValidator('confirmPassword')}
+        />
       
         </SectionComponent>
-        <SectionComponent>
+        {errorMessage &&(
+            <SectionComponent>
+                {Object.keys(errorMessage).map(
+                    (error, index)=>
+                        errorMessage[`${error}`] && (
+                        <TextComponent 
+                        text={errorMessage[`${error}`]} 
+                        key={`error${index}`}
+                         color={'coral'}
+                         />
+                        ),
 
-        {
-            errorMessage && <TextComponent text={errorMessage} color={'coral'}/>
-        }
+                        )}
+                
         </SectionComponent>
+        )}
+
+  
         <SpaceComponent height={5}/>
         <SectionComponent>
-            <ButtonComponent onPress={handleRegister} text="Đăng ký" type='primary'/>
+            <ButtonComponent onPress={handleRegister} text="Đăng ký" disable={isDisable} type='primary'/>
         </SectionComponent>
 <SocialLogin/>
         <SectionComponent>

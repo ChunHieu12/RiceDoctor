@@ -1,8 +1,10 @@
 
 import axios from 'axios';
 import queryString from 'query-string';
+import { appInfo } from '../constants/appInfos';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const axiosClient = axios.create({
+    baseURL:appInfo.BASE_URL,
     paramsSerializer: params =>queryString.stringify(params)
 });
 axiosClient.interceptors.request.use(async(config:any)=>{

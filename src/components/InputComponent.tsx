@@ -15,10 +15,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
   isPassword?:boolean,
   allowClear?: boolean,
   type?:KeyboardType,
+  onEnd?:()=> void
  }
  const InputComponent = (props: Props) => {
 
-  const{value, onChange, affix, placeholder, suffix, isPassword, type, allowClear}=props;
+  const{value, onChange, affix, placeholder, suffix, isPassword, type, allowClear, onEnd}=props;
   const[isShowPass, setIsShowPass] = useState(isPassword??false);
    return (
      <View style={[styles.inputContainer]}>
@@ -32,6 +33,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
       placeholderTextColor={'#747688'}
       keyboardType={type ?? 'default'}
       autoCapitalize='none'
+      onEndEditing={onEnd}
       />
       {suffix??suffix}
       <TouchableOpacity onPress={isPassword?()=>setIsShowPass(!isShowPass):()=>onChange('')

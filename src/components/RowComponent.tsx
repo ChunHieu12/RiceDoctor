@@ -14,7 +14,7 @@ interface Props{
 const RowComponent = (props:Props) => {
     const{justify, styles, children, onPres}=props;
     const localStyle =[globalStyles.row,{
-    justifyContent:justify
+    justifyContent:justify ?? 'center'
     }, styles]
 
   return onPres?(<TouchableOpacity activeOpacity={0.9} onPress={onPres} style ={localStyle} >

@@ -1,29 +1,44 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { useAsyncStorage } from '@react-native-async-storage/async-storage'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addAuth, authSelector } from '../redux/reducers/authReducer'
 import AuthNavigator from './AuthNavigator'
 import MainNavigator from './MainNavigator'
+import { SplashScreen } from '../screens'
 
 const AppRouters = () => {
+    const [isShowSplash, setIsShowSplash] = useState(true);
     const {getItem} = useAsyncStorage('auth');
-
     const auth = useSelector(authSelector);
-    const dispatch = useDispatch()
-    console.log(auth)
-
-    useEffect(()=>{
-        checkLogin();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const dispatch = useDispatch();
+  
+    useEffect(() => {
+      checkLogin();
+      const timeout = setTimeout(() => {
+        setIsShowSplash(false);
+      }, 1500);
+  
+      return () => clearTimeout(timeout);
     }, []);
+
+
     const checkLogin = async()=>{
         const res = await getItem();
         console.log(res)
         res && dispatch(addAuth(JSON.parse(res)))
-    }
+    };
   return (
-    <>{auth.accesstoken ? <MainNavigator /> : <AuthNavigator />}</>
+    <>
+    {isShowSplash ? (
+    <SplashScreen/>
+    ) : auth.accesstoken ? (
+       <MainNavigator /> 
+    ) :( 
+    <AuthNavigator />
+
+    )}
+    </>
   )
 }
 

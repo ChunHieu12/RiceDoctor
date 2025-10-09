@@ -2,7 +2,7 @@
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/self-closing-comp */
 import React, { useState } from 'react'
-import { Image, Switch, View } from 'react-native'
+import { Alert, Image, Switch, View } from 'react-native'
 import { globalStyles } from '../../styles/globalStyles'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
 import { appColors } from '../../constants/appColors'
@@ -11,19 +11,36 @@ import { fontFamilies } from '../../constants/fontFamilies'
 import { Button } from '@react-navigation/elements'
 import SocialLogin from './components/SocialLogin'
 import authencationAPI from '../../apis/authApi'
+import { Validate } from '../../utils/validate'
+import { useDispatch } from 'react-redux'
+import { addAuth } from '../../redux/reducers/authReducer'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginScreen = ({navigation}:any) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isRemember, setIsRemember]=useState(true);
+    const dispatch = useDispatch();
 
     const handleLogin = async()=>{
-       try {
-        const res = await authencationAPI.HandleAuthentication('/hello');
-        console.log(res);
-       } catch (error) {
-        console.log(error);
-       }
+        const emailValidation = Validate.email(email)
+        if(emailValidation){
+            
+            try {
+             const res = await authencationAPI.HandleAuthentication(
+                '/login',
+                {email, password},
+                'post'
+            );
+
+            dispatch(addAuth(res.data));
+            await AsyncStorage.setItem('auth', isRemember?JSON.stringify(res.data):email,)
+            } catch (error) {
+             console.log(error);
+            }
+        }else{
+            Alert.alert("Email is not correct!!!");
+        }
     };
 
     return (
@@ -73,6 +90,7 @@ const LoginScreen = ({navigation}:any) => {
             value={isRemember}
             onChange={()=>setIsRemember(!isRemember)}
             />
+            <SpaceComponent width={4}/>
             <TextComponent text='Nhớ mật khẩu'/>
             </RowComponent>
             <ButtonComponent

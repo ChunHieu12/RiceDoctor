@@ -44,4 +44,12 @@ export const globalStyles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
     },
+    iconContainer:{
+        justifyContent:'center',
+        alignItems:'center',
+        backgroundColor: '#083d12ff',
+        width: 30,
+        height: 30,
+        borderRadius:100,
+    }
 })
