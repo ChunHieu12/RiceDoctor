@@ -84,7 +84,7 @@ const Verification = ({navigation, route}:any) => {
         setErrorMessage("")
         const api =`/register`
         const data ={
-          email, password, username:username ?? ""
+          email, password, fullname:username ?? ""
         }
 
         try {

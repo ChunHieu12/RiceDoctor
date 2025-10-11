@@ -25,21 +25,43 @@ const AppRouters = () => {
 
     const checkLogin = async()=>{
         const res = await getItem();
-        console.log(res)
+       
         res && dispatch(addAuth(JSON.parse(res)))
     };
-  return (
-    <>
-    {isShowSplash ? (
-    <SplashScreen/>
-    ) : auth.accesstoken ? (
-       <MainNavigator /> 
-    ) :( 
-    <AuthNavigator />
+  // return (
+  //   <>
+  //   {isShowSplash ? (
+  //   <SplashScreen/>
+  //   ) : auth.accesstoken ? (
+  //      <MainNavigator /> 
+  //   ) :( 
+  //   <AuthNavigator />
 
-    )}
+  //   )}
+  //   </>
+  // )
+//   return (
+//   <>
+//     {isShowSplash ? (
+//       <SplashScreen />
+//     ) : auth?.accesstoken ? (
+//       <MainNavigator />
+//     ) : (
+//       <AuthNavigator />
+//     )}
+//   </>
+// );
+return (
+    <>
+      {isShowSplash ? (
+        <SplashScreen />
+      ) : auth.accesstoken ? (
+        <MainNavigator />
+      ) : (
+        <AuthNavigator />
+      )}
     </>
-  )
+  );
 }
 
 export default AppRouters

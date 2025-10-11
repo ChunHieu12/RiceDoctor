@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable react/self-closing-comp */
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Alert, Image, Switch, View } from 'react-native'
 import { globalStyles } from '../../styles/globalStyles'
 import { ButtonComponent, ContainerComponent, InputComponent, RowComponent, SectionComponent, SpaceComponent, TextComponent } from '../../components'
@@ -17,11 +17,22 @@ import { addAuth } from '../../redux/reducers/authReducer'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 const LoginScreen = ({navigation}:any) => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [isRemember, setIsRemember]=useState(true);
+    const [isDisabled, setIsDisabled] = useState(true);
+
     const dispatch = useDispatch();
 
+    useEffect(()=>{
+         const emailValidation = Validate.email(email)
+        if(!email || !password || !emailValidation){
+            setIsDisabled(true);
+        }else{
+            setIsDisabled(false);
+        }
+    },[email, password]);
+    
     const handleLogin = async()=>{
         const emailValidation = Validate.email(email)
         if(emailValidation){
@@ -102,7 +113,7 @@ const LoginScreen = ({navigation}:any) => {
         </SectionComponent>
         <SpaceComponent height={16}/>
         <SectionComponent>
-            <ButtonComponent onPress={handleLogin} text="Đăng nhập" type='primary'/>
+            <ButtonComponent disable={isDisabled} onPress={handleLogin} text="Đăng nhập" type='primary'/>
         </SectionComponent>
 <SocialLogin/>
         <SectionComponent>

@@ -90,7 +90,7 @@ const initValue ={
     const api = `/verification`
     setIsLoading(true)
     try {
-        const res = await authencationAPI.HandleAuthentication(api, {email: values.email}, 'post')
+        const res = await authencationAPI.HandleAuthentication(api, {email: values.email, password: values.password, fullname:values.username}, 'post')
   
         setIsLoading(false);
         navigation.navigate('Verification' ,{

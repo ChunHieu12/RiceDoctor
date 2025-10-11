@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
     "@react-native-community/cli-doctor": "^20.0.2",
+    "@react-native-google-signin/google-signin": "^11.0.0",
     "@react-native-vector-icons/octicons": "^20.3.0",
     "@react-native/new-app-screen": "0.81.4",
     "@react-navigation/bottom-tabs": "^7.4.7",
@@ -35,7 +36,8 @@
     "react-native-vector-icons": "^10.3.0",
     "react-native-worklets": "^0.6.0",
     "react-redux": "^9.2.0",
-    "redux": "^5.0.1"
+    "redux": "^5.0.1",
+    "versions": "^13.2.3"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
